@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="https://www.ros.org/wiki/xacro">
+    <xacro:macro name="arm6_description">
+
+    <xacro:include filename="$(find arm6)/arm6/urdf/inc/create_link.xacro"/>
+
+    <!-- Constants for robot dimensions and offsets -->
+    <xacro:property name="PI" value="3.1415926535897931" />
+    <xacro:property name="mass" value="10" />
+    <xacro:property name="width1" value="20" />
+    <xacro:property name="width2" value="40" />
+
+    <xacro:property name="height0" value="45" />
+    <xacro:property name="height1" value="70" />
+    <xacro:property name="height2" value="80" />
+    <xacro:property name="height3" value="65" />
+    <xacro:property name="height4" value="10" />
+    <xacro:property name="height5" value="10" />
+
+    <xacro:property name="depth1" value="50" />
+    <xacro:property name="depth2" value="20" />
+    <xacro:property name="depth3" value="50" />
+    <xacro:property name="depth4" value="50" />
+    <xacro:property name="depth5" value="50" />
+
+    <xacro:property name="zoffset" value="5" />
+    <xacro:property name="zoffset2" value="80" />
+    <xacro:property name="yoffset" value="12.5" />
+    <xacro:property name="xoffset" value="5" />
+
+    <xacro:property name="tolerance" value="10" />
+
+    <!-- Base joint to fix the base link to the environment -->
+    <joint name="base_joint" type="fixed">
+        <parent link="environment2"/>
+        <child link="base_link" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Base Link -->
+    <link name="base_link">
+        <collision>
+            <origin xyz="0 0 0" rpy="0 ${PI} ${-PI/8}" />
+            <geometry>
+                <mesh filename="package://arm6/arm6/meshes/collision/arm_base.dae" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <!-- Starting position of block -->
+            <origin xyz="0 0 0" rpy="0 ${PI} ${-PI/8}"/>
+            <!-- Size of the first block -->
+            <geometry>
+                <mesh filename="package://arm6/arm6/meshes/visual/arm_base.dae" />
+            </geometry>
+        </visual>
+        <inertial>
+            <mass value="${mass}" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+    </link>
+
+    <!-- Joint 0 (rotation) -->
+    <joint name="joint0" type="revolute">
+        <parent link="base_link" />
+        <child link="link0" />
+        <origin xyz="0 0 -15" rpy="0 0 0"/>
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="${-pi}" upper="${pi}" velocity="2.5"/>
+    </joint>
+
+    <xacro:create_link 
+        link_name="link0"
+        xyz_offset="0 0 0"
+        rpy_offset="0 0 0"
+        mesh_package="arm6/arm6"
+        mesh_name="rotating_waist"
+    />
+
+    <!-- Joint 1 -->
+    <joint name="joint1" type="revolute">
+        <parent link="link0" />
+        <child link="link1" />
+        <origin xyz="0 0 ${height0 - tolerance}" rpy="0 0 0" />
+        <axis xyz="1 0 0" />
+        <limit effort="1000.0" lower="${-1.919}" upper="${1.919}" velocity="2.5"/>
+    </joint>
+    
+    <!-- Link 1 -->
+    <xacro:create_link
+        link_name="link1"
+        xyz_offset="0 ${yoffset} ${tolerance}"
+        rpy_offset="1.57075 0 0"
+        mesh_package="arm6/arm6"
+        mesh_name="link_1_arm"
+    />
+
+    <!-- Joint 2 -->
+    <joint name="joint2" type="revolute">
+        <parent link="link1" />
+        <child link="link2" />
+        <origin xyz="0 0 ${height1 + 3*tolerance}" />
+        <axis xyz="1 0 0" />
+        <limit effort="1000.0" lower="${-1.919}" upper="${1.919}" velocity="2.5" />
+    </joint>
+
+    <!-- Link 2 -->
+    <link name="link2">
+        <visual>
+            <origin xyz="0 0 ${height2/2 - tolerance}" rpy="0 0 0" />
+            <geometry>
+                <box size="${width2} ${depth2} ${height2}" />
+            </geometry>
+        </visual>
+        <inertial>
+            <mass value="${mass}" />
+            <inertia
+                ixx="${mass / 12.0 * (width1*width1 + height2*height2)}" ixy="0.0" ixz="0.0"
+                iyy="${mass / 12.0 * (height2*height2 + width1*width1)}" iyz="0.0"
+                izz="${mass / 12.0 * (width1*width1 + width1*width1)}" />
+        </inertial>
+    </link>
+
+    <!-- Joint 3 -->
+    <joint name="joint3" type="revolute">
+        <parent link="link2" />
+        <child link="link3" />
+        <origin xyz="0 0 ${height1 - tolerance}" />
+        <axis xyz="1 0 0" />
+        <limit effort="1000.0" lower="${-1.919}" upper="${1.919}" velocity="2.5"/>
+    </joint>
+
+    <!-- Link 3 -->
+    <xacro:create_link
+        link_name="link3"
+        xyz_offset="0 ${yoffset} ${height3/2 + tolerance}"
+        rpy_offset="0 0 0"
+        mesh_package="arm6/arm6"
+        mesh_name="link_3_arm"
+    />
+
+    <!-- Joint 4 -->
+    <joint name="joint4" type="revolute">
+        <parent link="link3" />
+        <child link="link4" />
+        <origin xyz="0 0 ${height3 + tolerance/2}" />
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="${-1.919}" upper="${1.919}" velocity="2.5"/>
+    </joint>
+
+    <!-- Link 4 -->
+    <link name="link4">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${width2} ${depth2} ${height4}" />
+            </geometry>
+        </visual>
+        <inertial>
+            <mass value="${mass}" />
+            <inertia
+                ixx="${mass / 12.0 * (width1*width1 + height2*height2)}" ixy="0.0" ixz="0.0"
+                iyy="${mass / 12.0 * (height2*height2 + width1*width1)}" iyz="0.0"
+                izz="${mass / 12.0 * (width1*width1 + width1*width1)}" />
+        </inertial>
+    </link>
+
+    <!-- Joint 5 (tool head) -->
+    <joint name="joint5" type="prismatic">
+        <parent link="link4" />
+        <child link="link5" />
+        <origin xyz="${-xoffset} 0 ${height4 + tolerance}" />
+        <axis xyz="1 0 0" />
+        <limit effort="1000.0" lower="${-2*pi}" upper="0" velocity="2.5"/>
+    </joint>
+
+    <!-- Link 5 -->
+    <link name="link5">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${height5} ${depth2} ${width2}" />
+            </geometry>
+        </visual>
+        <inertial>
+            <mass value="${mass}" />
+            <inertia
+                ixx="${mass / 12.0 * (width1*width1 + height2*height2)}" ixy="0.0" ixz="0.0"
+                iyy="${mass / 12.0 * (height2*height2 + width1*width1)}" iyz="0.0"
+                izz="${mass / 12.0 * (width1*width1 + width1*width1)}" />
+        </inertial>
+    </link>
+
+    <!-- Joint 6 (tool head) -->
+    <joint name="joint6" type="prismatic">
+        <!-- joint 6 mirrors joint 5 due to mimic -->
+        <mimic joint="joint5" multiplier="-1" />
+        <parent link="link4" />
+        <child link="link6" />
+        <origin xyz="${xoffset} 0 ${height4 + tolerance}" />
+        <axis xyz="1 0 0" />
+        <limit effort="1000.0" lower="0" upper="${2*pi}" velocity="2.5"/>
+    </joint>
+
+    <!-- Link 6 -->
+    <link name="link6">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${height5} ${depth2} ${width2}" />
+            </geometry>
+        </visual>
+        <inertial>
+            <mass value="${mass}" />
+            <inertia
+                ixx="${mass / 12.0 * (width1*width1 + height2*height2)}" ixy="0.0" ixz="0.0"
+                iyy="${mass / 12.0 * (height2*height2 + width1*width1)}" iyz="0.0"
+                izz="${mass / 12.0 * (width1*width1 + width1*width1)}" />
+        </inertial>
+    </link>
+
+    </xacro:macro>
+</robot>

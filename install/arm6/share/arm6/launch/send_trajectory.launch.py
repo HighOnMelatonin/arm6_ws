@@ -1,0 +1,1 @@
+/home/ruianh/arm6_ws/src/bringup/launch/send_trajectory.launch.py

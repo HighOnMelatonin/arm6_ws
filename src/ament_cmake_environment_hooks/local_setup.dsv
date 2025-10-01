@@ -1,0 +1,3 @@
+source;share/arm6/environment/ament_prefix_path.sh
+source;share/arm6/environment/library_path.sh
+source;share/arm6/environment/path.sh

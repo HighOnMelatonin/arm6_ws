@@ -1,0 +1,1 @@
+/home/ruianh/arm6_ws/build/arm6/ament_cmake_core/arm6Config-version.cmake

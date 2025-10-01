@@ -1,0 +1,1 @@
+/home/ruianh/arm6_ws/src/description/launch/view_r6bot.launch.py

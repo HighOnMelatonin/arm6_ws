@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="r6bot">
+  <xacro:arg name="use_gazebo" default="true" />
+  <!-- Import r6bot macro -->
+  <xacro:include filename="$(find arm6)/arm6/urdf/arm6dof_description.urdf.xacro" />
+  <xacro:include filename="$(find arm6)/arm6/urdf/carlikebot_description.urdf.xacro" />
+  <xacro:include filename="$(find arm6)/arm6/urdf/carlikebot.materials.xacro" />
+  <!-- create link fixed to the "world" -->
+  <link name="world" />
+
+  <!-- <xacro:if value="$(arg use_gazebo)">
+    <xacro:include filename="$(find arm6)/gazebo/arm6.gazebo.xacro" />
+    <xacro:include filename="$(find arm6)/gazebo/carbot.gazebo.xacro" />
+    
+    <xacro:carbot />
+
+  </xacro:if> -->
+  
+  <xacro:carlikebot />
+
+  <joint name="connection2" type="fixed">
+    <parent link="chassis_link" />
+    <child link="environment2" />
+    <origin xyz="70 0 107" rpy="0 0 1.5707" />
+  </joint>
+  <link name="environment2" />
+
+  <xacro:arm6_description />
+
+  <!-- Import r6bot ros2_control description -->
+  <xacro:include
+    filename="$(find arm6)/ros2_control/r6bot.ros2_control.xacro" />
+  <xacro:r6bot_ros2_control name="r6bot" />
+
+
+
+</robot>

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.xacro": "xml",
+        "string": "cpp",
+        "unordered_map": "cpp"
+    }
+}

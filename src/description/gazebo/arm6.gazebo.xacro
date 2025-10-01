@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="https://ros.org/wiki/xacro">
+
+    <xacro:macro name="arm6_gazebo">
+        <gazebo>
+            <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+                <parameters>$(find arm6)/config/r6bot_controller.yaml</parameters>
+            </plugin>
+        </gazebo>
+
+        <gazebo reference="base_link">
+            <mesh><uri>package://arm6/arm6/meshes/visual/arm_base.stl</uri></mesh>
+        </gazebo>
+        <gazebo reference="link0">
+            <mesh><uri></uri>package://arm6/arm6/meshes/visual/arm0.dae</mesh>
+        </gazebo>
+        <gazebo reference="link1" />
+        <gazebo reference="link2" />
+        <gazebo reference="link3" />
+        <gazebo reference="link4" />
+        <gazebo reference="link5" />
+        <gazebo reference="link6" />
+    </xacro:macro>
+</robot>

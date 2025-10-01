@@ -1,0 +1,26 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 10  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+
+r6bot_controller:
+  ros__parameters:
+    type: arm6/RobotController
+    joints:
+      - joint0
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+
+    command_interfaces:
+      - position
+      - velocity
+
+    state_interfaces:
+      - position
+      - velocity
