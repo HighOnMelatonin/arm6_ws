@@ -22,7 +22,7 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <mesh filename="package://arm6/arm6/meshes/collision/car_chassis.dae">
-          <uri>"package://arm6/arm6/meshes/collision/car_chassis.stl"</uri>
+          <uri>"package://arm6/arm6/meshes/collision/car_chassis.dae"</uri>
         </mesh>
       </geometry>
     </collision>
@@ -31,6 +31,7 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <mesh filename="package://arm6/arm6/meshes/visual/car_chassis.dae" />
+          <uri>"package://arm6/arm6/meshes/visual/car_chassis.dae"</uri>
       </geometry>
     </visual>
 

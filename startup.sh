@@ -2,9 +2,9 @@
 
 #Startup for arm6
 
-export GZ_SIM_RESOURCE_PATH=/home/ruianh/arm6_ws/install/arm6/share
 
 build () {
+	export GZ_SIM_RESOURCE_PATH=/home/ruianh/arm6_ws/install/arm6/share
 	colcon build
 	. install/local_setup.sh
 	echo "Built and installed locally"
