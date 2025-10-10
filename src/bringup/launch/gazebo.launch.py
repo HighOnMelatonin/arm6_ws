@@ -34,7 +34,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [FindPackageShare("ros_gz_sim"), "/launch/gz_sim.launch.py"]
         ),
-        launch_arguments=[("gz_args", ["--headless-rendering -s -r -v 3 empty.sdf"])],
+        launch_arguments=[("gz_args", ["--headless-rendering -s -r -v 4 empty.sdf"])],
         condition=UnlessCondition(gui),
     )
 
@@ -56,6 +56,15 @@ def generate_launch_description():
         ],
     )
 
+    ## Gazebo Websocket
+    gz_xml_launch = """<?xml version='1.0'?>
+        <gz version='1.0'>
+        <plugin name='gz::launch::WebsocketServer'
+                filename='gz-launch-websocket-server'>
+            <port>9002</port>
+        </plugin>
+        </gz>
+        """
 
     # Get URDF via xacro
     robot_description_content = Command(

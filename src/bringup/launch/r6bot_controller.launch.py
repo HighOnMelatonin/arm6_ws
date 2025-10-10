@@ -81,6 +81,16 @@ def generate_launch_description():
         arguments=["-d", rviz_config_file],
         condition=IfCondition(gui),
     )
+    arm_controller_node = Node(
+        package="arm_controller",
+        executable="arm_controller",
+        name="arm_controller",
+        output="screen",
+        parameters=[
+            {'serial_port': LaunchConfiguration('serial_port', default='/dev/ttyUSB0')},
+            {'baud_rate': LaunchConfiguration('baud_rate', default='115200')},
+        ],
+    )
 
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
@@ -119,6 +129,7 @@ def generate_launch_description():
 
     nodes = [
         control_node,
+        arm_controller_node,
         robot_state_pub_node,
         robot_controller_spawner,
         joint_state_publisher_node,
